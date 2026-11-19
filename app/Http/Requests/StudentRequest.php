@@ -24,7 +24,7 @@ class StudentRequest extends FormRequest
             'first_name' => ['required', 'string', 'max:100'],
             'last_name' => ['required', 'string', 'max:100'],
             'date_of_birth' => ['nullable', 'date', 'before_or_equal:today'],
-            'gender' => ['nullable', Rule::in(['female', 'male', 'other', 'prefer_not_to_say'])],
+            'gender' => ['nullable', Rule::in(['female', 'male'])],
             'email' => ['nullable', 'email', 'max:255', Rule::unique('students')->ignore($student)],
             'phone' => ['nullable', 'string', 'max:32'],
             'status' => ['required', Rule::in(['active', 'inactive', 'graduated', 'transferred'])],

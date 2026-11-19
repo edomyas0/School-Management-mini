@@ -112,6 +112,24 @@ class SchoolManagementApiTest extends TestCase
             ->assertJsonValidationErrors('date_of_birth');
     }
 
+    public function test_student_gender_only_accepts_male_or_female(): void
+    {
+        $admin = $this->administrator();
+
+        foreach (['other', 'prefer_not_to_say'] as $gender) {
+            $this->actingAs($admin)->postJson('/api/students', [
+                'admission_number' => 'ADM-GENDER-'.strtoupper(str_replace('_', '-', $gender)),
+                'first_name' => 'Test',
+                'last_name' => 'Student',
+                'gender' => $gender,
+                'status' => 'active',
+            ])->assertUnprocessable()
+                ->assertJsonValidationErrors('gender');
+        }
+
+        $this->assertDatabaseCount('students', 0);
+    }
+
     public function test_teacher_profiles_persist_qualifications_and_employment_details(): void
     {
         $admin = $this->administrator();

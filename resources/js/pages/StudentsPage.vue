@@ -33,7 +33,7 @@ const fields = computed(() => [
     { name: 'first_name', label: 'First name', required: true, maxlength: 100 },
     { name: 'last_name', label: 'Last name', required: true, maxlength: 100 },
     { name: 'date_of_birth', label: 'Date of birth', type: 'date' },
-    { name: 'gender', label: 'Gender', type: 'select', placeholder: 'Not specified', options: [{ value: 'female', label: 'Female' }, { value: 'male', label: 'Male' }, { value: 'other', label: 'Other' }, { value: 'prefer_not_to_say', label: 'Prefer not to say' }] },
+    { name: 'gender', label: 'Gender', type: 'select', placeholder: 'Not specified', options: [{ value: 'female', label: 'Female' }, { value: 'male', label: 'Male' }] },
     { name: 'email', label: 'Email address', type: 'email', maxlength: 255 },
     { name: 'phone', label: 'Phone number', maxlength: 32 },
     { name: 'status', label: 'Status', type: 'select', required: true, default: 'active', options: [{ value: 'active', label: 'Active' }, { value: 'inactive', label: 'Inactive' }, { value: 'graduated', label: 'Graduated' }, { value: 'transferred', label: 'Transferred' }] },
@@ -50,7 +50,7 @@ const columns = [
 const detailFields = [
     { label: 'Admission number', value: (record) => record.admission_number },
     { label: 'Date of birth', value: (record) => record.date_of_birth },
-    { label: 'Gender', value: (record) => record.gender?.replaceAll('_', ' ') },
+    { label: 'Gender', value: (record) => record.gender ? record.gender.charAt(0).toUpperCase() + record.gender.slice(1) : null },
     { label: 'Email address', value: (record) => record.email },
     { label: 'Phone number', value: (record) => record.phone },
     { label: 'Class', value: (record) => record.class ? `${record.class.grade} · ${record.class.section} (${record.class.academic_year})` : null },
