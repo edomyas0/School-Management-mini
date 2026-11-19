@@ -96,6 +96,7 @@ class SchoolManagementApiTest extends TestCase
             'first_name' => 'Today',
             'last_name' => 'Student',
             'date_of_birth' => $today,
+            'gender' => 'female',
             'status' => 'active',
         ])->assertCreated()
             ->assertJsonPath('data.date_of_birth', $today);
@@ -107,6 +108,7 @@ class SchoolManagementApiTest extends TestCase
             'first_name' => 'Future',
             'last_name' => 'Student',
             'date_of_birth' => $tomorrow,
+            'gender' => 'male',
             'status' => 'active',
         ])->assertUnprocessable()
             ->assertJsonValidationErrors('date_of_birth');
@@ -126,6 +128,14 @@ class SchoolManagementApiTest extends TestCase
             ])->assertUnprocessable()
                 ->assertJsonValidationErrors('gender');
         }
+
+        $this->actingAs($admin)->postJson('/api/students', [
+            'admission_number' => 'ADM-GENDER-MISSING',
+            'first_name' => 'Test',
+            'last_name' => 'Student',
+            'status' => 'active',
+        ])->assertUnprocessable()
+            ->assertJsonValidationErrors('gender');
 
         $this->assertDatabaseCount('students', 0);
     }
@@ -329,6 +339,7 @@ class SchoolManagementApiTest extends TestCase
             'admission_number' => 'ADM-2026-011',
             'first_name' => 'Noah',
             'last_name' => 'Wilson',
+            'gender' => 'male',
             'status' => 'active',
             'class_id' => $class->id,
         ])->assertUnprocessable()

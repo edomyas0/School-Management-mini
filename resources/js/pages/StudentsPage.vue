@@ -33,7 +33,7 @@ const fields = computed(() => [
     { name: 'first_name', label: 'First name', required: true, maxlength: 100 },
     { name: 'last_name', label: 'Last name', required: true, maxlength: 100 },
     { name: 'date_of_birth', label: 'Date of birth', type: 'date' },
-    { name: 'gender', label: 'Gender', type: 'select', placeholder: 'Not specified', options: [{ value: 'female', label: 'Female' }, { value: 'male', label: 'Male' }] },
+    { name: 'gender', label: 'Gender', type: 'select', required: true, options: [{ value: 'female', label: 'Female' }, { value: 'male', label: 'Male' }] },
     { name: 'email', label: 'Email address', type: 'email', maxlength: 255 },
     { name: 'phone', label: 'Phone number', maxlength: 32 },
     { name: 'status', label: 'Status', type: 'select', required: true, default: 'active', options: [{ value: 'active', label: 'Active' }, { value: 'inactive', label: 'Inactive' }, { value: 'graduated', label: 'Graduated' }, { value: 'transferred', label: 'Transferred' }] },
