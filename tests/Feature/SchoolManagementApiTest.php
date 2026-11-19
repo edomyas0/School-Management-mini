@@ -86,6 +86,32 @@ class SchoolManagementApiTest extends TestCase
         $this->assertSoftDeleted('students', ['id' => $studentId]);
     }
 
+    public function test_a_student_can_have_a_date_of_birth_of_today_in_the_school_timezone(): void
+    {
+        $admin = $this->administrator();
+        $today = now(config('app.timezone'))->toDateString();
+
+        $this->actingAs($admin)->postJson('/api/students', [
+            'admission_number' => 'ADM-TODAY-001',
+            'first_name' => 'Today',
+            'last_name' => 'Student',
+            'date_of_birth' => $today,
+            'status' => 'active',
+        ])->assertCreated()
+            ->assertJsonPath('data.date_of_birth', $today);
+
+        $tomorrow = now(config('app.timezone'))->addDay()->toDateString();
+
+        $this->actingAs($admin)->postJson('/api/students', [
+            'admission_number' => 'ADM-TOMORROW-001',
+            'first_name' => 'Future',
+            'last_name' => 'Student',
+            'date_of_birth' => $tomorrow,
+            'status' => 'active',
+        ])->assertUnprocessable()
+            ->assertJsonValidationErrors('date_of_birth');
+    }
+
     public function test_teacher_profiles_persist_qualifications_and_employment_details(): void
     {
         $admin = $this->administrator();

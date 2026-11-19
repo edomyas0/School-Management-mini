@@ -36,8 +36,9 @@ On Windows, if Composer reports that ZIP support is missing, enable
    ```
 
 3. Configure `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, and
-   `DB_PASSWORD` in `.env`. For a local-only environment, `DB_CONNECTION=sqlite`
-   is also supported.
+   `DB_PASSWORD` in `.env`. Set `APP_TIMEZONE` to the school's IANA timezone;
+   date-only school records use this timezone. For a local-only environment,
+   `DB_CONNECTION=sqlite` is also supported.
 4. Start the Laravel and Vite development servers:
 
    ```powershell
