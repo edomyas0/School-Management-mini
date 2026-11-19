@@ -10,6 +10,18 @@ planned module boundaries are documented in [docs/architecture.md](docs/architec
 Attendance, examinations, timetables, fees, parent access, role administration,
 and report exports are not implemented in this release slice.
 
+## Application preview
+
+The screenshots below show the authenticated administrator experience.
+
+| Dashboard | Students |
+|---|---|
+| ![Dashboard](docs/screenshots/dashboard.png) | ![Students](docs/screenshots/students.png) |
+
+| Teachers | Academic setup |
+|---|---|
+| ![Teachers](docs/screenshots/teachers.png) | ![Academic setup](docs/screenshots/academic-setup.png) |
+
 ## Requirements
 
 - PHP 8.2+ with `pdo_mysql`, `openssl`, `mbstring`, `fileinfo`, and `zip`
