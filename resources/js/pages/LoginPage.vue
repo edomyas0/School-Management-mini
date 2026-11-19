@@ -46,7 +46,6 @@ async function submit() {
                 <label class="form-field"><span>Password</span><input v-model="password" type="password" autocomplete="current-password" required /></label>
                 <p v-if="error" class="form-alert" role="alert">{{ error }}</p>
                 <button class="button button-primary login-submit" type="submit" :disabled="loading">{{ loading ? 'Signing in…' : 'Sign in' }}</button>
-                <p class="login-help">Demo accounts are listed in the project README.</p>
             </form>
         </section>
     </main>

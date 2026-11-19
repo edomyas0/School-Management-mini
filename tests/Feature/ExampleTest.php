@@ -14,6 +14,20 @@ class ExampleTest extends TestCase
     {
         $response = $this->get('/');
 
-        $response->assertStatus(200);
+        $response->assertOk()
+            ->assertViewIs('app')
+            ->assertSee('id="app"', false)
+            ->assertDontSee('Laravel');
+    }
+
+    public function test_application_pages_use_the_vue_shell_instead_of_a_default_welcome_page(): void
+    {
+        $this->get('/students')
+            ->assertOk()
+            ->assertViewIs('app')
+            ->assertSee('id="app"', false)
+            ->assertDontSee('Laravel');
+
+        $this->assertFileDoesNotExist(resource_path('views/welcome.blade.php'));
     }
 }
