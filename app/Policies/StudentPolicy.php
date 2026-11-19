@@ -19,7 +19,7 @@ class StudentPolicy
 
     public function create(User $user): bool
     {
-        return $user->canManageSchool();
+        return $user->role === 'registrar';
     }
 
     public function update(User $user, Student $student): bool

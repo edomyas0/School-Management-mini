@@ -34,6 +34,7 @@ class SchoolManagementApiTest extends TestCase
     public function test_a_student_can_be_registered_assigned_and_archived(): void
     {
         $admin = $this->administrator();
+        $registrar = $this->registrar();
         $year = AcademicYear::create([
             'name' => '2026-2027',
             'starts_on' => '2026-09-01',
@@ -49,7 +50,7 @@ class SchoolManagementApiTest extends TestCase
             'capacity' => 30,
         ]);
 
-        $response = $this->actingAs($admin)->postJson('/api/students', [
+        $response = $this->actingAs($registrar)->postJson('/api/students', [
             'admission_number' => 'ADM-2026-001',
             'first_name' => 'Olivia',
             'last_name' => 'Reed',
@@ -88,10 +89,10 @@ class SchoolManagementApiTest extends TestCase
 
     public function test_a_student_can_have_a_date_of_birth_of_today_in_the_school_timezone(): void
     {
-        $admin = $this->administrator();
+        $registrar = $this->registrar();
         $today = now(config('app.timezone'))->toDateString();
 
-        $this->actingAs($admin)->postJson('/api/students', [
+        $this->actingAs($registrar)->postJson('/api/students', [
             'admission_number' => 'ADM-TODAY-001',
             'first_name' => 'Today',
             'last_name' => 'Student',
@@ -103,7 +104,7 @@ class SchoolManagementApiTest extends TestCase
 
         $tomorrow = now(config('app.timezone'))->addDay()->toDateString();
 
-        $this->actingAs($admin)->postJson('/api/students', [
+        $this->actingAs($registrar)->postJson('/api/students', [
             'admission_number' => 'ADM-TOMORROW-001',
             'first_name' => 'Future',
             'last_name' => 'Student',
@@ -116,10 +117,10 @@ class SchoolManagementApiTest extends TestCase
 
     public function test_student_gender_only_accepts_male_or_female(): void
     {
-        $admin = $this->administrator();
+        $registrar = $this->registrar();
 
         foreach (['other', 'prefer_not_to_say'] as $gender) {
-            $this->actingAs($admin)->postJson('/api/students', [
+            $this->actingAs($registrar)->postJson('/api/students', [
                 'admission_number' => 'ADM-GENDER-'.strtoupper(str_replace('_', '-', $gender)),
                 'first_name' => 'Test',
                 'last_name' => 'Student',
@@ -129,7 +130,7 @@ class SchoolManagementApiTest extends TestCase
                 ->assertJsonValidationErrors('gender');
         }
 
-        $this->actingAs($admin)->postJson('/api/students', [
+        $this->actingAs($registrar)->postJson('/api/students', [
             'admission_number' => 'ADM-GENDER-MISSING',
             'first_name' => 'Test',
             'last_name' => 'Student',
@@ -143,8 +144,9 @@ class SchoolManagementApiTest extends TestCase
     public function test_teacher_profiles_persist_qualifications_and_employment_details(): void
     {
         $admin = $this->administrator();
+        $registrar = $this->registrar();
 
-        $response = $this->actingAs($admin)->postJson('/api/teachers', [
+        $response = $this->actingAs($registrar)->postJson('/api/teachers', [
             'staff_number' => 'T-001',
             'first_name' => 'Lina',
             'last_name' => 'Chen',
@@ -335,7 +337,7 @@ class SchoolManagementApiTest extends TestCase
             'status' => 'active',
         ]);
 
-        $this->actingAs($admin)->postJson('/api/students', [
+        $this->actingAs($this->registrar())->postJson('/api/students', [
             'admission_number' => 'ADM-2026-011',
             'first_name' => 'Noah',
             'last_name' => 'Wilson',
@@ -358,6 +360,17 @@ class SchoolManagementApiTest extends TestCase
         ]);
 
         $this->actingAs($teacher)->getJson('/api/students')->assertForbidden();
+    }
+
+    public function test_administrators_cannot_register_students_or_teachers(): void
+    {
+        $admin = $this->administrator();
+
+        $this->actingAs($admin)->postJson('/api/students', [])->assertForbidden();
+        $this->actingAs($admin)->postJson('/api/teachers', [])->assertForbidden();
+
+        $this->assertDatabaseCount('students', 0);
+        $this->assertDatabaseCount('teachers', 0);
     }
 
     public function test_dashboard_counts_come_from_persisted_records(): void
@@ -384,6 +397,16 @@ class SchoolManagementApiTest extends TestCase
             'email' => 'admin@example.test',
             'password' => 'secret-password',
             'role' => 'administrator',
+        ]);
+    }
+
+    private function registrar(): User
+    {
+        return User::create([
+            'name' => 'School Registrar',
+            'email' => 'registrar@example.test',
+            'password' => 'secret-password',
+            'role' => 'registrar',
         ]);
     }
 }

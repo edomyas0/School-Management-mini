@@ -165,7 +165,7 @@ function formatClass(value) {
 
 <template>
     <PageHeading title="Students" description="Register students, manage class placements, and keep student records current.">
-        <button class="button button-primary" @click="beginCreate">Register student</button>
+        <button v-if="auth.user?.role === 'registrar'" class="button button-primary" @click="beginCreate">Register student</button>
     </PageHeading>
     <div class="toolbar">
         <label class="search-field"><span aria-hidden="true">⌕</span><input v-model="search" type="search" placeholder="Search name, admission no. or email" aria-label="Search students" /></label>

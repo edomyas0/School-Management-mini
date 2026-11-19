@@ -162,7 +162,7 @@ function confirmRemove(row) {
 
 <template>
     <PageHeading title="Teachers" description="Maintain staff profiles, qualifications, employment details, and teaching assignments.">
-        <button class="button button-primary" @click="beginCreate">Add teacher</button>
+        <button v-if="auth.user?.role === 'registrar'" class="button button-primary" @click="beginCreate">Add teacher</button>
     </PageHeading>
     <div class="toolbar">
         <label class="search-field"><span aria-hidden="true">⌕</span><input v-model="search" type="search" placeholder="Search name, staff no. or email" aria-label="Search teachers" /></label>

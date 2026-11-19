@@ -78,8 +78,10 @@ assignment integrity, and dashboard data.
 
 - There is no public account-registration endpoint. Accounts must be provisioned
   by an operator until user/role administration is implemented.
-- School setup, student, and teacher writes require the administrator or
-  registrar role. Only administrators can archive student and teacher records.
+- School setup, student/teacher record updates, and profile access are available
+  to administrators and registrars. Only registrars can register new students
+  and teachers; the registration controls are not shown to administrators.
+  Only administrators can archive student and teacher records.
 - Laravel validates request data, applies policies and foreign keys, and uses
   bound ORM queries. Browser writes are protected by CSRF and same-origin
   Sanctum session authentication.

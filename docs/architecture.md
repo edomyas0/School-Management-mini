@@ -57,10 +57,12 @@ operations return 403.
 | POST | `/logout` | End the current session |
 | GET | `/user` | Return the authenticated user and role |
 | GET | `/dashboard` | Return persisted counts, activity, and academic-year data |
-| GET/POST | `/students` | Search/page students; register a student |
-| GET/PUT/DELETE | `/students/{student}` | Read, update, or archive a student |
-| GET/POST | `/teachers` | Search/page teachers; register a teacher |
-| GET/PUT/DELETE | `/teachers/{teacher}` | Read, update, or archive a teacher |
+| GET | `/students` | Search/page students (administrator or registrar) |
+| POST | `/students` | Register a student (registrar only) |
+| GET/PUT/DELETE | `/students/{student}` | Read/update a student (administrator or registrar); archive (administrator only) |
+| GET | `/teachers` | Search/page teachers (administrator or registrar) |
+| POST | `/teachers` | Register a teacher (registrar only) |
+| GET/PUT/DELETE | `/teachers/{teacher}` | Read/update a teacher (administrator or registrar); archive (administrator only) |
 | GET/POST/PUT/DELETE | `/academic-years[/{id}]` | Manage academic years |
 | GET/POST/PUT/DELETE | `/grades[/{id}]` | Manage grade levels |
 | GET/POST/PUT/DELETE | `/classes[/{id}]` | Manage classes |

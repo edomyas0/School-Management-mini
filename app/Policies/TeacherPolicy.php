@@ -19,7 +19,7 @@ class TeacherPolicy
 
     public function create(User $user): bool
     {
-        return $user->canManageSchool();
+        return $user->role === 'registrar';
     }
 
     public function update(User $user, Teacher $teacher): bool
